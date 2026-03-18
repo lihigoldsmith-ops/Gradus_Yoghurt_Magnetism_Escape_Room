@@ -1,0 +1,1055 @@
+echo "# Gradus_Yoghurt_Magnetism_Escape_Room" >> README.md
+git init
+git add README.md
+git commit -m "first commit"
+git branch -M main
+git remote add origin https://github.com/lihigoldsmith-ops/Gradus_Yoghurt_Magnetism_Escape_Room.git
+git push -u origin main
+
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>תעלומת היוגורט של גרדוס | חדר בריחה פיזיקלי</title>
+<style>
+/* ─── RESET & BASE ─────────────────────────────────── */
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --ink:#0b0b10;
+  --ink2:#13131e;
+  --ink3:#1c1c2b;
+  --gold:#d4a017;
+  --gold-lt:#f0c040;
+  --gold-pale:#3a2f0a;
+  --chalk:#3cb371;
+  --chalk-lt:#5ddc8a;
+  --chalk-dim:#1a3a22;
+  --scarlet:#c0392b;
+  --scarlet-dim:#2a0d0a;
+  --cream:#e8dfc8;
+  --cream-dim:#8a8070;
+  --border:#252535;
+  --shadow-gold:rgba(212,160,23,0.22);
+  --shadow-chalk:rgba(60,179,113,0.25);
+}
+html{font-size:16px;scroll-behavior:smooth}
+body{
+  background:var(--ink);
+  color:var(--cream);
+  font-family:'Georgia','Times New Roman',serif;
+  direction:rtl;
+  min-height:100vh;
+  overflow-x:hidden;
+}
+
+/* ─── NOISE TEXTURE OVERLAY ─────────────────────────── */
+body::before{
+  content:'';
+  position:fixed;
+  inset:0;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='300' height='300' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
+  pointer-events:none;
+  z-index:1000;
+  opacity:.5;
+}
+
+/* ─── SCREENS ────────────────────────────────────────── */
+.screen{display:none;min-height:100vh}
+.screen.active{display:flex;flex-direction:column}
+
+/* ─── INTRO SCREEN ───────────────────────────────────── */
+#intro-screen{
+  align-items:center;
+  justify-content:center;
+  padding:24px 16px;
+  background:
+    radial-gradient(ellipse 80% 60% at 50% 30%, #1e1700 0%, transparent 70%),
+    var(--ink);
+}
+
+/* rain lines background */
+#intro-screen::after{
+  content:'';
+  position:fixed;
+  inset:0;
+  background-image:repeating-linear-gradient(
+    90deg,
+    transparent,
+    transparent 60px,
+    rgba(212,160,23,0.025) 60px,
+    rgba(212,160,23,0.025) 61px
+  );
+  pointer-events:none;
+}
+
+.case-wrapper{
+  max-width:720px;
+  width:100%;
+  animation:slideUp .7s cubic-bezier(.22,1,.36,1) both;
+}
+
+.case-tape{
+  background:var(--gold);
+  color:#000;
+  font-family:'Courier New',monospace;
+  font-size:.65rem;
+  font-weight:900;
+  letter-spacing:4px;
+  text-align:center;
+  padding:6px 0;
+  clip-path:polygon(0 0,100% 0,98% 100%,2% 100%);
+}
+
+.case-body{
+  background:linear-gradient(160deg,#1a1600 0%,#0e0e14 100%);
+  border:1px solid #3a3010;
+  border-top:none;
+  padding:36px 40px 40px;
+  position:relative;
+  box-shadow:0 30px 80px rgba(0,0,0,.7), inset 0 0 80px rgba(0,0,0,.4);
+}
+
+.case-corner{
+  position:absolute;
+  width:18px;height:18px;
+  border-color:var(--gold);
+  border-style:solid;
+  border-width:0;
+  opacity:.6;
+}
+.case-corner.tl{top:12px;right:12px;border-top-width:2px;border-right-width:2px}
+.case-corner.br{bottom:12px;left:12px;border-bottom-width:2px;border-left-width:2px}
+
+.stamp{
+  position:absolute;
+  top:24px;left:30px;
+  border:2.5px solid var(--scarlet);
+  color:var(--scarlet);
+  font-family:'Courier New',monospace;
+  font-size:.62rem;
+  font-weight:900;
+  letter-spacing:3px;
+  padding:4px 10px;
+  transform:rotate(-12deg);
+  opacity:.75;
+  user-select:none;
+}
+
+.case-meta{
+  font-family:'Courier New',monospace;
+  font-size:.65rem;
+  color:var(--cream-dim);
+  letter-spacing:3px;
+  margin-bottom:14px;
+}
+
+.main-title{
+  font-size:clamp(1.6rem,4vw,2.4rem);
+  color:var(--gold);
+  line-height:1.25;
+  text-shadow:0 0 30px rgba(212,160,23,.5);
+  margin-bottom:6px;
+  font-weight:normal;
+}
+
+.title-eyebrow{
+  font-family:'Courier New',monospace;
+  font-size:.72rem;
+  color:var(--chalk);
+  letter-spacing:3px;
+  margin-bottom:18px;
+  opacity:.8;
+}
+
+.divider{
+  border:none;
+  border-top:1px solid #2a2400;
+  margin:18px 0;
+}
+
+.story-block{
+  border-right:3px solid var(--gold);
+  padding:14px 18px;
+  background:rgba(0,0,0,.35);
+  margin:12px 0;
+  font-size:.9rem;
+  line-height:1.9;
+}
+
+.story-block.red-accent{border-right-color:var(--scarlet)}
+.story-block.green-accent{border-right-color:var(--chalk)}
+
+.label-tag{
+  display:inline-block;
+  font-family:'Courier New',monospace;
+  font-size:.65rem;
+  letter-spacing:2px;
+  padding:2px 8px;
+  margin-bottom:6px;
+  border:1px solid currentColor;
+}
+.label-tag.gold{color:var(--gold);border-color:var(--gold-pale)}
+.label-tag.red{color:var(--scarlet)}
+.label-tag.green{color:var(--chalk)}
+
+.btn-start{
+  margin-top:26px;
+  background:linear-gradient(135deg,#8a6000,var(--gold));
+  color:#000;
+  border:none;
+  font-family:'Georgia',serif;
+  font-size:1rem;
+  font-weight:bold;
+  padding:14px 44px;
+  border-radius:2px;
+  cursor:pointer;
+  letter-spacing:1px;
+  transition:transform .2s,box-shadow .2s;
+  display:block;
+  text-align:center;
+  width:100%;
+}
+.btn-start:hover{transform:translateY(-2px);box-shadow:0 8px 30px var(--shadow-gold)}
+.btn-start:active{transform:translateY(0)}
+
+/* ─── GAME SCREEN ────────────────────────────────────── */
+#game-screen{
+  padding:0;
+  background:var(--ink);
+}
+
+.game-topbar{
+  background:var(--ink2);
+  border-bottom:1px solid var(--border);
+  padding:12px 24px;
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  position:sticky;
+  top:0;
+  z-index:50;
+}
+
+.topbar-title{
+  font-family:'Courier New',monospace;
+  font-size:.7rem;
+  color:var(--gold);
+  letter-spacing:3px;
+}
+
+.progress-track{
+  display:flex;
+  gap:6px;
+  align-items:center;
+}
+
+.pip{
+  width:28px;height:6px;
+  border-radius:3px;
+  background:var(--border);
+  transition:all .4s;
+}
+.pip.done{background:var(--gold)}
+.pip.active{background:var(--gold-lt);box-shadow:0 0 8px var(--gold)}
+
+.station-wrap{
+  max-width:760px;
+  width:100%;
+  margin:0 auto;
+  padding:28px 20px 60px;
+}
+
+.stn-badge{
+  font-family:'Courier New',monospace;
+  font-size:.65rem;
+  letter-spacing:3px;
+  color:var(--gold);
+  margin-bottom:6px;
+}
+
+.stn-title{
+  font-size:clamp(1.3rem,3.5vw,1.8rem);
+  color:var(--gold-lt);
+  font-weight:normal;
+  text-shadow:0 0 15px rgba(240,192,64,.3);
+  margin-bottom:20px;
+  line-height:1.3;
+}
+
+.stn-icon{font-size:2.2rem;display:block;margin-bottom:10px}
+
+.clue-panel{
+  background:rgba(0,0,0,.5);
+  border-right:3px solid var(--gold);
+  padding:16px 20px;
+  margin:16px 0;
+  font-size:.92rem;
+  line-height:1.85;
+}
+
+.physics-card{
+  background:#0a120a;
+  border:1px solid #1e3a1e;
+  border-radius:4px;
+  padding:20px 22px;
+  margin:18px 0;
+}
+
+.physics-card-head{
+  font-family:'Courier New',monospace;
+  font-size:.68rem;
+  color:var(--chalk);
+  letter-spacing:3px;
+  margin-bottom:14px;
+  display:flex;
+  align-items:center;
+  gap:8px;
+}
+.physics-card-head::after{
+  content:'';
+  flex:1;
+  height:1px;
+  background:var(--chalk-dim);
+}
+
+.formula-line{
+  font-family:'Courier New',monospace;
+  font-size:1.05rem;
+  color:#7fff7f;
+  padding:8px 12px;
+  background:rgba(0,0,0,.4);
+  border-radius:3px;
+  margin-bottom:14px;
+  direction:ltr;
+  text-align:center;
+}
+
+.data-grid{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:6px 16px;
+}
+
+.data-row{
+  font-size:.83rem;
+  color:var(--cream-dim);
+  display:flex;
+  gap:6px;
+  align-items:baseline;
+}
+
+.data-row .val{
+  color:var(--cream);
+  font-family:'Courier New',monospace;
+  font-size:.8rem;
+}
+
+.hint-panel{
+  background:#1a1200;
+  border:1px dashed #5a4010;
+  border-radius:4px;
+  padding:14px 18px;
+  margin:12px 0;
+  font-size:.85rem;
+  line-height:1.8;
+  font-family:'Courier New',monospace;
+  color:var(--gold-lt);
+  direction:rtl;
+  display:none;
+}
+.hint-panel.visible{display:block;animation:fadeSlide .3s ease}
+
+.answer-area{
+  margin:20px 0 14px;
+  display:flex;
+  align-items:center;
+  gap:12px;
+  flex-wrap:wrap;
+}
+
+.answer-label{
+  font-family:'Courier New',monospace;
+  font-size:.8rem;
+  color:var(--gold);
+  letter-spacing:1px;
+  white-space:nowrap;
+}
+
+.answer-field{
+  width:130px;
+  background:#06060e;
+  border:2px solid var(--border);
+  color:var(--cream);
+  font-family:'Courier New',monospace;
+  font-size:1rem;
+  padding:9px 14px;
+  border-radius:3px;
+  text-align:center;
+  direction:ltr;
+  transition:border-color .25s,box-shadow .25s;
+  appearance:textfield;
+  -moz-appearance:textfield;
+}
+.answer-field::-webkit-outer-spin-button,
+.answer-field::-webkit-inner-spin-button{-webkit-appearance:none}
+.answer-field:focus{outline:none;border-color:var(--gold);box-shadow:0 0 12px var(--shadow-gold)}
+.answer-field.ok{border-color:var(--chalk);box-shadow:0 0 12px var(--shadow-chalk);background:#040d04}
+.answer-field.err{border-color:var(--scarlet);background:#0d0404;animation:shake .35s ease}
+
+.unit-chip{
+  font-family:'Courier New',monospace;
+  font-size:.78rem;
+  color:var(--cream-dim);
+  background:var(--ink3);
+  padding:3px 10px;
+  border-radius:20px;
+  border:1px solid var(--border);
+  white-space:nowrap;
+}
+
+.feedback-bar{
+  padding:11px 16px;
+  border-radius:3px;
+  font-size:.88rem;
+  line-height:1.55;
+  margin:8px 0;
+  display:none;
+}
+.feedback-bar.ok{display:block;background:#041a04;border:1px solid var(--chalk);color:#90ee90}
+.feedback-bar.err{display:block;background:var(--scarlet-dim);border:1px solid var(--scarlet);color:#ffaaaa}
+
+.action-row{
+  display:flex;
+  gap:10px;
+  flex-wrap:wrap;
+  margin-top:12px;
+}
+
+.btn-check{
+  background:linear-gradient(135deg,#133a13,var(--chalk));
+  color:#000;
+  border:none;
+  font-family:'Georgia',serif;
+  font-weight:bold;
+  font-size:.9rem;
+  padding:11px 26px;
+  border-radius:3px;
+  cursor:pointer;
+  transition:transform .2s,box-shadow .2s;
+}
+.btn-check:hover{transform:translateY(-2px);box-shadow:0 6px 20px var(--shadow-chalk)}
+.btn-check:active{transform:translateY(0)}
+
+.btn-hint{
+  background:transparent;
+  border:1px solid var(--border);
+  color:var(--cream-dim);
+  font-family:'Georgia',serif;
+  font-size:.85rem;
+  padding:11px 20px;
+  border-radius:3px;
+  cursor:pointer;
+  transition:all .2s;
+}
+.btn-hint:hover{border-color:var(--gold);color:var(--gold)}
+
+/* ─── REVEAL SCREEN ──────────────────────────────────── */
+#reveal-screen{
+  align-items:center;
+  justify-content:flex-start;
+  padding:24px 16px 60px;
+  background:
+    radial-gradient(ellipse 70% 50% at 50% 20%, #00101a 0%, transparent 65%),
+    var(--ink);
+}
+
+.reveal-wrapper{
+  max-width:740px;
+  width:100%;
+  animation:slideUp .8s cubic-bezier(.22,1,.36,1) both;
+}
+
+.reveal-tape{
+  background:var(--scarlet);
+  color:#fff;
+  font-family:'Courier New',monospace;
+  font-size:.65rem;
+  font-weight:900;
+  letter-spacing:4px;
+  text-align:center;
+  padding:6px 0;
+  clip-path:polygon(0 0,100% 0,98% 100%,2% 100%);
+}
+
+.reveal-body{
+  background:linear-gradient(160deg,#050f14 0%,#0b0b14 100%);
+  border:1px solid #1a2030;
+  border-top:none;
+  padding:36px 40px 44px;
+}
+
+.reveal-title{
+  font-size:clamp(1.5rem,4vw,2.2rem);
+  color:var(--gold);
+  font-weight:normal;
+  text-shadow:0 0 25px rgba(212,160,23,.45);
+  margin-bottom:4px;
+}
+
+.dog-bounce{
+  font-size:4.5rem;
+  display:block;
+  text-align:center;
+  margin:18px 0;
+  animation:bounce .9s ease-in-out infinite alternate;
+}
+
+.scene-block{
+  border-right:3px solid #1e3a50;
+  padding:14px 18px;
+  background:rgba(0,0,0,.45);
+  margin:14px 0;
+  font-size:.9rem;
+  line-height:1.9;
+}
+.scene-block.accent{border-right-color:var(--gold)}
+
+.daniel-speech{
+  background:#100a00;
+  border:1px solid var(--gold-pale);
+  border-radius:4px;
+  padding:18px 22px;
+  font-style:italic;
+  font-size:.95rem;
+  line-height:2;
+  color:var(--gold-lt);
+  margin:18px 0;
+  position:relative;
+}
+.daniel-speech::before{
+  content:'❝';
+  position:absolute;
+  top:-14px;right:16px;
+  font-size:2rem;
+  color:var(--gold);
+  font-style:normal;
+}
+
+.verdict-row{
+  display:flex;
+  gap:12px;
+  flex-wrap:wrap;
+  margin:20px 0;
+  justify-content:center;
+}
+
+.verdict-chip{
+  font-family:'Courier New',monospace;
+  font-size:.72rem;
+  letter-spacing:2px;
+  padding:6px 16px;
+  border-radius:20px;
+  border:1px solid currentColor;
+}
+.verdict-chip.gold{color:var(--gold)}
+.verdict-chip.green{color:var(--chalk)}
+.verdict-chip.red{color:var(--scarlet)}
+
+.btn-restart{
+  display:block;
+  width:100%;
+  margin-top:28px;
+  background:transparent;
+  border:1px solid var(--gold);
+  color:var(--gold);
+  font-family:'Georgia',serif;
+  font-size:.95rem;
+  padding:13px;
+  border-radius:3px;
+  cursor:pointer;
+  letter-spacing:1px;
+  transition:all .25s;
+}
+.btn-restart:hover{background:var(--gold);color:#000}
+
+/* ─── KEYFRAMES ──────────────────────────────────────── */
+@keyframes slideUp{
+  from{opacity:0;transform:translateY(32px)}
+  to{opacity:1;transform:translateY(0)}
+}
+@keyframes fadeSlide{
+  from{opacity:0;transform:translateX(8px)}
+  to{opacity:1;transform:translateX(0)}
+}
+@keyframes shake{
+  0%,100%{transform:translateX(0)}
+  20%,60%{transform:translateX(-7px)}
+  40%,80%{transform:translateX(7px)}
+}
+@keyframes bounce{
+  from{transform:translateY(0) rotate(-3deg)}
+  to{transform:translateY(-14px) rotate(3deg)}
+}
+@keyframes pulse-gold{
+  0%,100%{box-shadow:0 0 8px var(--shadow-gold)}
+  50%{box-shadow:0 0 22px var(--shadow-gold)}
+}
+@keyframes glow-in{
+  from{opacity:0;filter:blur(4px)}
+  to{opacity:1;filter:blur(0)}
+}
+
+.fade-in{animation:glow-in .5s ease both}
+
+/* ─── RESPONSIVE ─────────────────────────────────────── */
+@media(max-width:600px){
+  .case-body,.reveal-body{padding:24px 18px 28px}
+  .data-grid{grid-template-columns:1fr}
+  .answer-area{flex-direction:column;align-items:flex-start}
+  .action-row{flex-direction:column}
+  .btn-check,.btn-hint{width:100%}
+}
+
+/* ─── SPECIAL ELEMENTS ───────────────────────────────── */
+em.highlight{color:var(--gold-lt);font-style:normal;font-weight:bold}
+em.warn{color:var(--scarlet);font-style:normal;font-weight:bold}
+em.chalk{color:var(--chalk-lt);font-style:normal}
+
+/* progress numeric */
+#progress-label{
+  font-family:'Courier New',monospace;
+  font-size:.68rem;
+  color:var(--cream-dim);
+}
+</style>
+</head>
+<body>
+
+<!-- ════════════════════════════════
+     INTRO SCREEN
+════════════════════════════════ -->
+<div id="intro-screen" class="screen active">
+  <div class="case-wrapper">
+    <div class="case-tape">⬛ תיק חסוי — משטרת אנקורי — מס׳ 001-פיז ⬛</div>
+    <div class="case-body">
+      <div class="case-corner tl"></div>
+      <div class="case-corner br"></div>
+      <div class="stamp">CLASSIFIED</div>
+
+      <div class="case-meta">תחנת משטרת אנקורי &nbsp;|&nbsp; תאריך: [מסווג] &nbsp;|&nbsp; חוקר: אתה</div>
+
+      <h1 class="main-title">🔍 תעלומת היוגורט של גרדוס</h1>
+      <div class="title-eyebrow">⚡ חדר בריחה פיזיקלי &nbsp;·&nbsp; 4 תחנות &nbsp;·&nbsp; מגנטיות &amp; כוח לורנץ</div>
+
+      <hr class="divider">
+
+      <div class="story-block">
+        <span class="label-tag gold">📍 מקום האירוע</span><br>
+        בית ספר אנקורי. חדר המורים. המקרר הנעול.<br>
+        מנהל בית הספר, <em class="highlight">גרדוס</em>, ידוע בדקדקנותו האגדית —
+        ובאהבתו הבלתי-מתפשרת ליוגורט הפרמיום שלו (יוגורט כבשים מיובא, מחיר: ₪47.50,
+        מאובטח מאחורי <em class="highlight">מנעול מגנטי-סולנואידי מיוחד</em>).
+        הבוקר, כשגרדוס פתח את חדר המורים, מצא: <em class="warn">מנעול פרוץ. מקרר ריק. יוגורט — אין.</em>
+      </div>
+
+      <div class="story-block red-accent">
+        <span class="label-tag red">🚨 חשודה ראשית</span><br>
+        עיני החשד נפלו על <em class="highlight">דניאל</em> .
+        אישה חכמה ומסתורית, שמגיעה לעבודה מדי בוקר עם כלבה הגאוני,
+        <em class="highlight">בוני</em>. היא יודעת כל מה שאפשר לדעת על מגנטים,
+        סולנואידים וכוח לורנץ. אבל האם <em>היא</em> עמדה מאחורי הפשע הזה?
+      </div>
+
+      <div class="story-block green-accent">
+        <span class="label-tag green">🗂️ משימתכם, בלשים</span><br>
+        פתרו <em class="chalk">4 חידות פיזיקה</em> כדי לפתוח את ארבע חבילות הראיות.
+        בכל תחנה מסתתרת עובדה קריטית. יחד, הן יחשפו את
+        <em class="highlight">האמת המדהימה</em> מאחורי פריצת המקרר — ותגלה
+        שהמציאות משונה בהרבה מהציפיות.
+      </div>
+
+      <button class="btn-start" onclick="startGame()">📁 פתחו את התיק וצאו לחקור</button>
+    </div>
+  </div>
+</div>
+
+<!-- ════════════════════════════════
+     GAME SCREEN
+════════════════════════════════ -->
+<div id="game-screen" class="screen">
+  <div class="game-topbar">
+    <div>
+      <div class="topbar-title">🔍 תעלומת היוגורט של גרדוס</div>
+      <div id="progress-label">טוען...</div>
+    </div>
+    <div class="progress-track" id="pips">
+      <div class="pip active" id="pip0"></div>
+      <div class="pip" id="pip1"></div>
+      <div class="pip" id="pip2"></div>
+      <div class="pip" id="pip3"></div>
+    </div>
+  </div>
+
+  <div class="station-wrap">
+    <div id="stn-content" class="fade-in"></div>
+  </div>
+</div>
+
+<!-- ════════════════════════════════
+     REVEAL SCREEN
+════════════════════════════════ -->
+<div id="reveal-screen" class="screen">
+  <div class="reveal-wrapper">
+    <div class="reveal-tape">🎉 תיק פתור — הגילוי הסופי — תחנת משטרת אנקורי 🎉</div>
+    <div class="reveal-body">
+
+      <div class="verdict-row">
+        <span class="verdict-chip gold">✅ 4/4 תחנות פוצחו</span>
+        <span class="verdict-chip green">⚡ פיזיקה מוכחת</span>
+        <span class="verdict-chip red">🐾 החשוד: בוני</span>
+      </div>
+
+      <h2 class="reveal-title">🐕 הגילוי המדהים: זה לא היה אנושי</h2>
+
+      <span class="dog-bounce">🐕</span>
+
+      <div class="scene-block accent">
+        <strong style="color:var(--gold)">⏰ 02:17 לפנות בוקר | חדר המורים | בית ספר אנקורי</strong><br><br>
+        חושך מוחלט. שקט. ואז — פטפוט של ארבע רגליים על הפרקט.
+        <em class="highlight">בוני</em>, כלבה של דניאל, גדל בין ספרי פיזיקה,
+        ישן ליד מכשיר אינדוקציה, ואכל ביצקוויט בצורת מגנטים.
+        הוא ידע בדיוק מה הוא עושה.
+      </div>
+
+      <div class="scene-block">
+        הוא ניגש למקרר. הצמיד את הקולר המגנטי שלו —
+        בדיוק ב-<em class="highlight">0.5 מטר</em> מהמנעול, כפי שגילה הסורק הביומגנטי.
+        הקולר נשא זרם של <em class="highlight">10 אמפר</em>, ויצר שדה מגנטי
+        של <em class="highlight">4 × 10⁻⁶ טסלה</em> — בדיוק ערך הפעלת המנעול הסולנואידי
+        שדניאל הרצתה עליו הרצאה שלמה... בנוכחות בוני שישב ב"כיסא הסטודנטים" שלו.
+      </div>
+
+      <div class="scene-block">
+        <strong style="color:var(--scarlet)">🚨 מה הסורק הביומגנטי גילה:</strong><br>
+        שדה מגנטי של <em class="highlight">0.05 טסלה</em> —
+        גדול פי <em class="warn">500,000,000</em> מהשדה שמייצר לב אנושי (100 פיקוטסלה).
+        הנתון הזה שלל מיד כל חשד מדניאל.
+        הפולש לא היה בן-אדם. היה זה יצור בעל לב קטן יותר,
+        שדה מגנטי חזק יותר, ומוטיבציה יוגורטית — עמוקה מאין כמוה.
+      </div>
+
+      <div class="scene-block">
+        שלוש שעות לאחר מכן, כשגרדוס הגיע בשבע בבוקר,
+        מצא את המקרר פתוח, הקופסה ריקה, ועל השטיח —
+        <em class="highlight">טביעות כפות קטנות בוואניל</em>. 🐾
+      </div>
+
+      <div class="daniel-speech">
+        דניאל, שהוזמנה לחדר החקירות של גרדוס, פרצה בבכי מעורב בצחוק —<br><br>
+        "בוני! אוי, בוני שלי... כן, כן, אני יודעת שהוא גאון,
+        תמיד אמרתי את זה! לימדתי אותו על סולנואידים מגיל גור —
+        הוא ישב לידי בכל השיעורים שהכנתי, כלבי הקטן!
+        אבל שיפעיל את זה על <em>היוגורט של גרדוס</em>?!<br><br>
+        בוני, אתה הדבר הכי חכם, הכי מטורף, הכי-הכי בחיים שלי,
+        ואני אוהבת אותך עד הירח ובחזרה ועוד הלאה —
+        אבל עכשיו אנחנו הולכים ביחד לקנות ליוגורט חדש לגרדוס.
+        פרמיום כפול. ואתה נושא את השקית. 🐾❤️"
+      </div>
+
+      <div class="scene-block" style="border-right-color:var(--chalk-lt);text-align:center;font-size:.82rem;color:var(--cream-dim)">
+        <em class="chalk">אחרית דבר:</em> גרדוס קיבל שני יוגורטים חדשים.
+        בוני קיבל עצם גדולה במיוחד.
+        דניאל קיבלה... שיחה חינוכית רצינית על "האחריות המוסרית של בעלי חיות".
+        המנעול שודרג לחיישן ביומטרי שמזהה <em class="highlight">ריח אנושי בלבד</em>.
+      </div>
+
+      <button class="btn-restart" onclick="restartGame()">🔄 שחק שוב מהתחלה</button>
+    </div>
+  </div>
+</div>
+
+<!-- ════════════════════════════════
+     JAVASCRIPT
+════════════════════════════════ -->
+<script>
+/* ─── STATION DATA ─────────────────────────────────────── */
+const STATIONS = [
+  {
+    badge   : "תחנה 01 מתוך 04 | ראיה ראשונה",
+    icon    : "🔒",
+    title   : "פריצת המנעול המגנטי",
+    clue    : `הבלש מתכופף ובוחן את המנעול. לא שברו אותו — <em class="highlight">ביטלו</em> אותו.<br>
+               על המסגרת: סימן חריכה זעיר, וריח חרוך של כריכות נחושת שהתחממו.<br>
+               מישהו יצר שדה מגנטי בדיוק הנכון — ופתח את המנעול ממש כאילו ידע את הקוד.<br><br>
+               <strong style="color:var(--gold)">ראיה ראשונה:</strong>
+               מדידות המנעול מגלות שדה מגנטי של
+               <em class="highlight">B = 6.28 × 10⁻³ טסלה</em> נדרש לפתיחתו.
+               סולנואיד שנמצא ליד הקיר: <em class="highlight">n = 1000 כריכות/מטר</em>.<br>
+               חשב את <em class="highlight">הזרם החשמלי</em> שצריך לזרום דרכו.`,
+    formula : "B = μ₀ · n · I",
+    data    : [
+      ["B (שדה מגנטי)", "6.28 × 10⁻³ T"],
+      ["n (כריכות/מטר)", "1000 m⁻¹"],
+      ["μ₀", "4π × 10⁻⁷ T·m/A"],
+      ["I = ?","———"],
+    ],
+    hint    : `בידוד I:<br>
+               I = B / (μ₀ · n)<br>
+               I = 6.28×10⁻³ / (4π×10⁻⁷ × 1000)<br>
+               שים לב: 6.28 ≈ 2π<br>
+               I = (2π×10⁻³) / (4π×10⁻⁴) = 0.5 × 10 = <strong>5 A</strong>`,
+    unit    : "A",
+    unitLbl : "אמפר [A]",
+    answer  : 5,
+    tol     : 0.02,
+    okMsg   : "✓ נכון! זרם של 5 אמפר — חזק, ממוקד, מדויק. גאון פיזיקה? אולי. אבל המשך להשוות לנתונים הבאים...",
+    clueAfter: ""
+  },
+  {
+    badge   : "תחנה 02 מתוך 04 | ראיה שנייה",
+    icon    : "⚡",
+    title   : "חידת התיילים במעבדה",
+    clue    : `במעבדת הפיזיקה, שני תיילים שרופים נמצאו תלויים ליד דלת המקרר.<br>
+               הם רוטטו בלילה — זאת אמרה מצלמת האבטחה.<br>
+               <em class="highlight">רוטציה = כוח. כוח = עדות.</em><br><br>
+               <strong style="color:var(--gold)">ראיה שנייה:</strong>
+               שני תיילים מקבילים עם זרמים בכיוונים הפוכים.<br>
+               מרחק ביניהם: <em class="highlight">d = 6 ס"מ</em> &nbsp;|&nbsp;
+               זרמים: <em class="highlight">I₁ = 3A, I₂ = 4A</em><br>
+               חשב את <em class="highlight">כוח הגרירה לאורך יחידת אורך (F/L)</em>.<br>
+               <small style="color:var(--cream-dim)">הכנס את הערך ביחידות של 10⁻⁵ N/m</small>`,
+    formula : "F/L = μ₀ · I₁ · I₂ / (2π · d)",
+    data    : [
+      ["I₁", "3 A"],
+      ["I₂", "4 A"],
+      ["d (מרחק)", "0.06 m"],
+      ["μ₀", "4π × 10⁻⁷ T·m/A"],
+    ],
+    hint    : `F/L = (4π×10⁻⁷ × 3 × 4) / (2π × 0.06)<br>
+               = (48π × 10⁻⁷) / (0.12π)<br>
+               = 48×10⁻⁷ / 0.12<br>
+               = <strong>4×10⁻⁵ N/m</strong><br>
+               הכנס את המספר: <strong>4</strong>`,
+    unit    : "× 10⁻⁵ N/m",
+    unitLbl : "× 10⁻⁵ נ׳/מ׳",
+    answer  : 4,
+    tol     : 0.02,
+    okMsg   : "✓ מצוין! 4 × 10⁻⁵ N/m. כוח קטן, אך מדויק — אולי זו המורה לפיזיקה?.",
+    clueAfter: ""
+  },
+  {
+    badge   : "תחנה 03 מתוך 04 | ראיה שלישית",
+    icon    : "🫀",
+    title   : "הסורק הביומגנטי של גרדוס",
+    clue    : `גרדוס רכש סורק ביומגנטי יקרן לחדר המורים — "לבטיחות", כמובן.<br>
+               הסורק לכד חלקיק טעון שנדד ליד המקרר בלילה,
+               ורשם את נתוניו בדיוק.<br><br>
+               <em class="warn">⚠️ נתון קריטי לחקירה:</em>
+               הלב האנושי מייצר שדה מגנטי של כ-<em class="highlight">100 פיקוטסלה (10⁻¹⁰ T)</em>.
+               אם תוצאת החישוב <em class="warn">גדולה בהרבה</em> — הפורץ אולי בעל קוצב לב!<br><br>
+               <strong style="color:var(--gold)">ראיה שלישית:</strong><br>
+               כוח לורנץ: <em class="highlight">F = 4 × 10⁻¹⁴ N</em><br>
+               מטען: <em class="highlight">q = 1.6 × 10⁻¹⁹ C</em><br>
+               מהירות: <em class="highlight">v = 5 × 10⁶ m/s</em><br>
+               חשב את <em class="highlight">השדה המגנטי B</em>.`,
+    formula : "F = q · v · B  →  B = F / (q · v)",
+    data    : [
+      ["F (כוח לורנץ)", "4 × 10⁻¹⁴ N"],
+      ["q (מטען)", "1.6 × 10⁻¹⁹ C"],
+      ["v (מהירות)", "5 × 10⁶ m/s"],
+      ["B = ?", "———"],
+    ],
+    hint    : `B = F / (q · v)<br>
+               = 4×10⁻¹⁴ / (1.6×10⁻¹⁹ × 5×10⁶)<br>
+               = 4×10⁻¹⁴ / (8×10⁻¹³)<br>
+               = <strong>0.05 T</strong><br>
+               השווה: 0.05T לעומת 10⁻¹⁰T (לב אנושי) → הפרש: ×500,000,000!`,
+    unit    : "T",
+    unitLbl : "טסלה [T]",
+    answer  : 0.05,
+    tol     : 0.02,
+    okMsg   : "✓ 0.05 טסלה! 🚨 זה פי 500,000,000 מלב אנושי! זה לא היה בן-אדם ליד המקרר הלילה...",
+    clueAfter: ""
+  },
+  {
+    badge   : "תחנה 04 מתוך 04 | הראיה הסופית",
+    icon    : "🐾",
+    title   : "הקולר של בוני — החשיפה הסופית",
+    clue    : `הבלש רכן אל הרצפה ליד המקרר. שם, בתאורה החלשה:<br>
+               <em class="highlight">שיער. כלב.</em><br>
+               ובצמוד למקרר — סימן גרד עגלגל, בגובה 40 ס"מ. גובה קולר.<br><br>
+               הקולר של <em class="highlight">בוני</em> כולל סליל חשמלי קטן.
+               הסליל נושא זרם של <em class="highlight">I = 10 A</em>,
+               והמנעול מגיב לשדה מגנטי של <em class="highlight">B = 4 × 10⁻⁶ T</em>.<br><br>
+               <em class="warn">שאלה אחרונה, בלש:</em><br>
+               <strong>באיזה מרחק עמד בוני מהמקרר?</strong><br><br>
+               <small style="color:var(--cream-dim)">זו הראיה האחרונה. פתור — והאמת תתגלה.</small>`,
+    formula : "B = μ₀·I / (2π·r)  →  r = μ₀·I / (2π·B)",
+    data    : [
+      ["I (זרם בקולר)", "10 A"],
+      ["B (שדה מנעול)", "4 × 10⁻⁶ T"],
+      ["μ₀", "4π × 10⁻⁷ T·m/A"],
+      ["r = ?", "———"],
+    ],
+    hint    : `r = μ₀·I / (2π·B)<br>
+               = (4π×10⁻⁷ × 10) / (2π × 4×10⁻⁶)<br>
+               = (4π×10⁻⁶) / (8π×10⁻⁶)<br>
+               = 4 / 8 = <strong>0.5 מטר</strong>`,
+    unit    : "m",
+    unitLbl : "מטר [m]",
+    answer  : 0.5,
+    tol     : 0.02,
+    okMsg   : "✓ 0.5 מטר! בוני עמד חצי מטר מהמקרר. 🎉 התעלומה פוצחה! מכינים את הגילוי הסופי...",
+    clueAfter: ""
+  }
+];
+
+/* ─── STATE ─────────────────────────────────────────────── */
+let cur = 0;
+let hintOpen = [false,false,false,false];
+
+/* ─── SCREEN HELPERS ─────────────────────────────────────── */
+function show(id){
+  document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  window.scrollTo(0,0);
+}
+
+function startGame(){
+  cur=0; hintOpen=[false,false,false,false];
+  show('game-screen');
+  render(0);
+}
+
+function restartGame(){
+  show('intro-screen');
+}
+
+/* ─── RENDER STATION ─────────────────────────────────────── */
+function render(i){
+  const s = STATIONS[i];
+
+  // Update pips
+  for(let k=0;k<4;k++){
+    const p = document.getElementById('pip'+k);
+    p.className='pip';
+    if(k<i) p.classList.add('done');
+    else if(k===i) p.classList.add('active');
+  }
+  document.getElementById('progress-label').textContent =
+    `תחנה ${i+1} מתוך 4 | ${s.title}`;
+
+  // Build data rows
+  const dataHTML = s.data.map(([k,v]) =>
+    `<div class="data-row"><span>${k}:</span><span class="val">${v}</span></div>`
+  ).join('');
+
+  document.getElementById('stn-content').innerHTML = `
+    <div class="stn-badge">${s.badge}</div>
+    <span class="stn-icon">${s.icon}</span>
+    <h2 class="stn-title">${s.title}</h2>
+
+    <div class="clue-panel">${s.clue}</div>
+
+    <div class="physics-card">
+      <div class="physics-card-head">📐 נתוני התחנה</div>
+      <div class="formula-line">${s.formula}</div>
+      <div class="data-grid">${dataHTML}</div>
+    </div>
+
+    <div class="hint-panel" id="hint-panel">💡 <strong>רמז שלב-אחר-שלב:</strong><br><br>${s.hint}</div>
+
+    <div class="answer-area">
+      <span class="answer-label">◈ תשובה:</span>
+      <input  type="number"
+              id="ans"
+              class="answer-field"
+              placeholder="הכנס ערך"
+              step="any"
+              onkeydown="if(event.key==='Enter')check()">
+      <span class="unit-chip">${s.unitLbl}</span>
+    </div>
+
+    <div id="fb" class="feedback-bar"></div>
+
+    <div class="action-row">
+      <button class="btn-check" onclick="check()">🔍 בדוק תשובה</button>
+      <button class="btn-hint"  onclick="toggleHint()">💡 ${hintOpen[i]?'הסתר רמז':'הצג רמז'}</button>
+    </div>
+  `;
+
+  // re-fade
+  const c = document.getElementById('stn-content');
+  c.classList.remove('fade-in');
+  void c.offsetWidth;
+  c.classList.add('fade-in');
+
+  // restore hint
+  if(hintOpen[i]) document.getElementById('hint-panel').classList.add('visible');
+
+  // focus
+  setTimeout(()=>{ const a=document.getElementById('ans'); if(a) a.focus(); },80);
+}
+
+/* ─── HINT TOGGLE ────────────────────────────────────────── */
+function toggleHint(){
+  hintOpen[cur] = !hintOpen[cur];
+  const p = document.getElementById('hint-panel');
+  p.classList.toggle('visible', hintOpen[cur]);
+  // update btn label
+  const btns = document.querySelectorAll('.btn-hint');
+  btns.forEach(b => b.textContent = hintOpen[cur] ? '💡 הסתר רמז' : '💡 הצג רמז');
+}
+
+/* ─── CHECK ANSWER ───────────────────────────────────────── */
+function check(){
+  const s  = STATIONS[cur];
+  const el = document.getElementById('ans');
+  const fb = document.getElementById('fb');
+  const v  = parseFloat(el.value);
+
+  if(isNaN(v)){
+    fb.className='feedback-bar err';
+    fb.textContent='⚠️ אנא הכנס מספר תקני.';
+    return;
+  }
+
+  const relErr = Math.abs(v - s.answer) / Math.abs(s.answer);
+
+  if(relErr <= s.tol){
+    /* ✓ SUCCESS */
+    el.className='answer-field ok';
+    fb.className='feedback-bar ok';
+    fb.textContent = s.okMsg;
+
+    setTimeout(()=>{
+      if(cur < STATIONS.length - 1){
+        cur++;
+        render(cur);
+      } else {
+        setTimeout(()=>show('reveal-screen'), 600);
+      }
+    }, 2200);
+
+  } else {
+    /* ✗ WRONG */
+    el.className='answer-field err';
+    setTimeout(()=>{ el.classList.remove('err'); el.classList.remove('answer-field'); el.className='answer-field'; },400);
+
+    fb.className='feedback-bar err';
+
+    const ratio = v / s.answer;
+    let msg = '✗ לא מדויק. בדוק שוב את החישוב.';
+    if(ratio < 0.1)       msg = '✗ התשובה קטנה מאוד — בדוק את הסדרי הגודל.';
+    else if(ratio < 0.8)  msg = '✗ קרוב, אבל קטן מדי. בדוק את הנתונים שוב.';
+    else if(ratio > 10)   msg = '✗ התשובה גדולה מאוד — שים לב לסדרי הגודל.';
+    else if(ratio > 1.2)  msg = '✗ קרוב, אבל גדול מדי. אולי שכחת לחלק?';
+
+    if(fb.textContent === msg) msg += ' 💡 לחץ "הצג רמז" לעזרה.';
+    fb.textContent = msg;
+  }
+}
+</script>
+</body>
+</html>
